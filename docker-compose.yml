@@ -1,0 +1,12 @@
+version: '3.8'
+
+services:
+  bot:
+    container_name: covid19norge-twitter
+    image: frefrik/covid19norge-twitter:latest
+    restart: unless-stopped
+    environment:
+      - TZ=Europe/Oslo
+    volumes:
+      - ./config:/app/bot/config
+      - ./data:/app/bot/data
