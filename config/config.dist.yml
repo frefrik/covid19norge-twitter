@@ -1,0 +1,61 @@
+twitter:
+  auth:
+    consumer_key: <CONSUMER_KEY>
+    consumer_secret: <CONSUMER_SECRET>
+    access_token: <ACCESS_TOKEN>
+    access_token_secret: <ACCESS_SECRET>
+  jobs:
+    rss_fhi:
+      enabled: True
+      interval: 5
+    rss_regjeringen:
+      enabled: True
+      interval: 5
+    tested:
+      source:
+        name: FHI
+        url:  https://www.fhi.no/sv/smittsomme-sykdommer/corona/dags--og-ukerapporter/dags--og-ukerapporter-om-koronavirus/
+      enabled: True
+      interval: 5
+      text_pos_singular: ny registrert testet
+      text_pos_plural: nye registrert testet
+    confirmed:
+      source:
+        name: MSIS
+        url: https://statistikk.fhi.no/msis
+      enabled: True
+      interval: 5
+      text_pos_singular: nytt registrert smittetilfelle
+      text_pos_plural: nye registrerte smittetilfeller
+      text_neg_singular: 
+      text_neg_plural: 
+    dead:
+      source:
+        name: FHI
+        url: https://www.fhi.no/sv/smittsomme-sykdommer/corona/dags--og-ukerapporter/dags--og-ukerapporter-om-koronavirus/
+      enabled: True
+      interval: 5
+      text_pos_singular: nytt dødsfall registrert
+      text_pos_plural: nye dødsfall registrert
+      text_neg_singular: 
+      text_neg_plural: 
+    admissions:
+      source:
+        name: Helsedirektoratet
+        url: https://www.helsedirektoratet.no/statistikk/antall-innlagte-pasienter-pa-sykehus-med-pavist-covid-19
+      enabled: True
+      interval: 5
+      text_pos_singular: person mer på sykehus
+      text_pos_plural: flere personer på sykehus
+      text_neg_singular: person mindre på sykehus
+      text_neg_plural: personer færre på sykehus
+    respiratory:
+      source:
+        name: Helsedirektoratet
+        url: https://www.helsedirektoratet.no/statistikk/antall-innlagte-pasienter-pa-sykehus-med-pavist-covid-19
+      enabled: True
+      interval: 5
+      text_pos_singular: person mer på respirator
+      text_pos_plural: flere personer respirator
+      text_neg_singular: person mindre på respirator
+      text_neg_plural: personer færre på respirator
