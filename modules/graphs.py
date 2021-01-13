@@ -332,7 +332,7 @@ def graph_hospitalized():
 
     df = pd.DataFrame(data)
 
-    idx = pd.date_range(df['date'].min(), yesterday)
+    idx = pd.date_range('2020-03-08', yesterday)
     df.index = pd.DatetimeIndex(df['date'])
     df = df.reindex(idx)
     df['date'] = df.index
