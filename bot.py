@@ -9,12 +9,15 @@ from modules.utils import (
     get_messagetext,
     get_datetimestr,
     get_date_yesterday,
+    file_open_json,
+    file_write_json,
 )
 from modules.graphs import (
     graph_confirmed,
     graph_dead,
     graph_hospitalized,
     graph_tested_lab,
+    graph_vaccine,
 )
 
 with open("./config/config.yml", "r") as ymlfile:
@@ -158,6 +161,54 @@ def respiratory():
 
         print(ret_str, "\n")
         twitter.update_status(ret_str)
+
+
+def vaccine_doses():
+    source_url = jobs["vaccine"]["source"]["url"]
+    data = c19norge.timeseries("vaccine_doses")
+
+    curr_data = list(filter(lambda x: x["granularity_geo"] == "nation", data))[-1]
+    curr_total_doses = curr_data.get("total_doses")
+
+    last_data = file_open_json("vaccine_doses")
+    last_total_doses = last_data.get("total_doses")
+
+    diff_total_doses = curr_total_doses - last_total_doses
+
+    if diff_total_doses > 0:
+        graph_vaccine()
+        curr_total_dose_1 = curr_data.get("total_dose_1")
+        curr_total_dose_2 = curr_data.get("total_dose_2")
+
+        last_total_dose_1 = last_data.get("total_dose_1")
+        last_total_dose_2 = last_data.get("total_dose_2")
+
+        diff_total_dose_1 = curr_total_dose_1 - last_total_dose_1
+        diff_total_dose_2 = curr_total_dose_2 - last_total_dose_2
+
+        ret_str = "💉 Antall vaksinerte"
+
+        if diff_total_dose_1 != 0:
+            ret_str += f"\n{diff_total_dose_1:,} nye personer vaksinert med 1. dose"
+
+        if diff_total_dose_2 != 0:
+            ret_str += f"\n{diff_total_dose_2:,} nye personer fullvaksinert"
+
+        ret_str += (
+            f"\n\nTotalt {curr_total_dose_1:,} personer har fått minst én vaksinedose"
+        )
+        ret_str += f"\nTotalt {curr_total_dose_2:,} personer er fullvaksinert"
+        ret_str += f"\n\nKilde: {source_url}"
+
+        file_write_json("vaccine_doses", curr_data)
+
+        ret_str = ret_str.replace(",", " ")
+        print(ret_str, "\n")
+
+        file_vaccine_doses = "./graphs/no_vaccine_doses.png"
+        vaccine_graph = twitter.media_upload(file_vaccine_doses)
+
+        twitter.update_status(ret_str, media_ids=[vaccine_graph.media_id])
 
 
 def daily_stats():

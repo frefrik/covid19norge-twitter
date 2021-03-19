@@ -1,3 +1,4 @@
+import json
 import yaml
 from datetime import datetime, date, timedelta
 import modules.c19norge as c19norge
@@ -58,3 +59,15 @@ def get_date_yesterday():
     datestr = (date.today() - timedelta(days=1)).strftime("%d.%m.%Y")
 
     return datestr
+
+
+def file_open_json(category):
+    with open(f"data/{category}.json") as json_file:
+        data = json.load(json_file)
+
+    return data
+
+
+def file_write_json(category, data):
+    with open(f"data/{category}.json", "w") as json_file:
+        json.dump(data, json_file)
