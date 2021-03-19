@@ -16,6 +16,11 @@ key_words = {
         "utbrudd",
         "karantene",
         "reiser",
+        "AstraZeneca",
+        "Moderna",
+        "Comirnaty",
+        "BioNTech",
+        "Pfizer",
     ],
     "regjeringen": ["pressekonferanse"],
 }
