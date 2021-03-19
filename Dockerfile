@@ -8,8 +8,8 @@ ADD requirements.txt .
 RUN python -m pip install -r requirements.txt
 
 RUN npm -g config set user root \
- && npm install -g canvas \
- && npm install -g vega vega-lite vega-cli
+    && npm install -g canvas \
+    && npm install -g vega vega-lite vega-cli
 
 ADD . /app/bot
 WORKDIR /app/bot
