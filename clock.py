@@ -28,14 +28,6 @@ sched.add_job(
 sched.add_job(bot.dead, trigger="cron", minute="*/" + str(jobs["dead"]["interval"]))
 
 sched.add_job(
-    bot.admissions, trigger="cron", minute="*/" + str(jobs["admissions"]["interval"])
-)
-
-sched.add_job(
-    bot.respiratory, trigger="cron", minute="*/" + str(jobs["respiratory"]["interval"])
-)
-
-sched.add_job(
     bot.vaccine_doses, trigger="cron", minute="*/" + str(jobs["vaccine"]["interval"])
 )
 

@@ -46,15 +46,6 @@ def get_messagetext(name, diff):
     return messagetext
 
 
-def get_datetimestr():
-    datestr = datetime.now().strftime("%d.%m.%y")
-    timestr = datetime.now().strftime("%H:%M")
-
-    ret_str = datestr + " kl " + timestr
-
-    return ret_str
-
-
 def get_date_yesterday():
     datestr = (date.today() - timedelta(days=1)).strftime("%d.%m.%Y")
 

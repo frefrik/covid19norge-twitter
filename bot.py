@@ -7,7 +7,6 @@ from modules.utils import (
     file_open,
     file_write,
     get_messagetext,
-    get_datetimestr,
     get_date_yesterday,
     file_open_json,
     file_write_json,
@@ -107,57 +106,6 @@ def dead():
         file_write("dead", total)
 
         ret_str = ret_str.replace(",", " ")
-        print(ret_str, "\n")
-        twitter.update_status(ret_str)
-
-
-def admissions():
-    datetimestr = get_datetimestr()
-    total = c19norge.metadata("admissions", "total")
-
-    last_data = file_open("admissions")
-
-    diff = total - int(last_data)
-
-    if diff != 0:
-        if total == 1:
-            messagetext = "innlagt pasient på sykehus"
-        else:
-            messagetext = "innlagte pasienter på sykehus"
-
-        ret_str = f"🏥 Endring i antall innlagt på sykehus: {diff:+}"
-        ret_str += f"\n\nStatus {datetimestr}:"
-        ret_str += f"\n{total} {messagetext}"
-        ret_str += f"\n\nKilde: {jobs['admissions']['source']['url']}"
-
-        file_write("admissions", total)
-
-        ret_str = ret_str.replace(",", " ")
-        print(ret_str, "\n")
-        twitter.update_status(ret_str)
-
-
-def respiratory():
-    datetimestr = get_datetimestr()
-    total = c19norge.metadata("respiratory", "total")
-
-    last_data = file_open("respiratory")
-
-    diff = total - int(last_data)
-
-    if diff != 0:
-        if total == 1:
-            messagetext = "innlagt pasient som får respiratorbehandling"
-        else:
-            messagetext = "innlagte pasienter som får respiratorbehandling"
-
-        ret_str = f"😷 Endring i antall innlagt med respiratorbehandling: {diff:+}"
-        ret_str += f"\n\nStatus {datetimestr}:"
-        ret_str += f"\n{total} {messagetext}"
-        ret_str += f"\n\nKilde: {jobs['respiratory']['source']['url']}"
-
-        file_write("respiratory", total)
-
         print(ret_str, "\n")
         twitter.update_status(ret_str)
 
@@ -305,17 +253,14 @@ def daily_graphs():
     graph_tested_lab()
     graph_confirmed()
     graph_dead()
-    graph_hospitalized()
 
     file_tested_lab = "./graphs/no_tested_lab.png"
     file_confirmed = "./graphs/no_confirmed.png"
     file_dead = "./graphs/no_dead.png"
-    file_hospitalized = "./graphs/no_hospitalized.png"
 
     tested_lab = twitter.media_upload(file_tested_lab)
     confirmed = twitter.media_upload(file_confirmed)
     dead = twitter.media_upload(file_dead)
-    hospitalized = twitter.media_upload(file_hospitalized)
 
     message = "📊 Statistikk - {}".format(get_date_yesterday())
     message += "\n#covid19norge"
@@ -327,7 +272,6 @@ def daily_graphs():
             tested_lab.media_id,
             confirmed.media_id,
             dead.media_id,
-            hospitalized.media_id,
         ],
     )
 
