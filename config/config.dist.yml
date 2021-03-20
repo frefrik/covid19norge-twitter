@@ -59,6 +59,12 @@ twitter:
       text_pos_plural: flere personer respirator
       text_neg_singular: person mindre på respirator
       text_neg_plural: personer færre på respirator
+    hospitalized:
+      enabled: True
+      interval: 5
+      source:
+        name: Helsedirektoratet
+        url: https://www.helsedirektoratet.no/statistikk/antall-innlagte-pasienter-pa-sykehus-med-pavist-covid-19
     vaccine:
       enabled: True
       interval: 5

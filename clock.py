@@ -39,6 +39,12 @@ sched.add_job(
     bot.vaccine_doses, trigger="cron", minute="*/" + str(jobs["vaccine"]["interval"])
 )
 
+sched.add_job(
+    bot.hospitalized,
+    trigger="cron",
+    minute="*/" + str(jobs["hospitalized"]["interval"]),
+)
+
 # rss
 sched.add_job(
     bot.rss_fhi, trigger="cron", minute="*/" + str(jobs["rss_fhi"]["interval"])
