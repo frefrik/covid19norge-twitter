@@ -37,8 +37,6 @@ twitter:
       interval: 5
       text_pos_singular: nytt dødsfall registrert
       text_pos_plural: nye dødsfall registrert
-      text_neg_singular:
-      text_neg_plural:
     hospitalized:
       enabled: True
       interval: 5

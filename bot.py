@@ -87,27 +87,36 @@ def confirmed():
 
 
 def dead():
-    data = c19norge.metadata("dead")
-    total = data.get("total")
+    source_url = jobs["dead"]["source"]["url"]
 
-    last_data = file_open("dead")
+    curr_data = c19norge.timeseries("dead")[-1]
+    curr_total = curr_data.get("total")
 
-    dead_diff = total - int(last_data)
+    last_data = file_open_json("dead")
+    last_total = last_data.get("total")
 
-    if dead_diff > 0:
-        newToday = data.get("newToday")
+    diff_dead = curr_total - last_total
 
-        messagetext = get_messagetext("dead", dead_diff)
+    if diff_dead > 0:
+        graph_dead()
+        messagetext = get_messagetext("dead", diff_dead)
+        curr_new_today = curr_data.get("new")
 
-        ret_str = f"❗ {dead_diff} {messagetext}"
-        ret_str += f"\nTotalt: {total} (Nye i dag: {newToday})"
-        ret_str += f"\n\nKilde: {jobs['dead']['source']['url']}"
+        ret_str = "❗ COVID-19 assosierte dødsfall"
+        ret_str += f"\n{diff_dead} {messagetext}"
 
-        file_write("dead", total)
+        ret_str += f"\nTotalt: {curr_total:,} (Nye i dag: {curr_new_today:,})"
+        ret_str += f"\n\nKilde: {source_url}"
+
+        file_write_json("dead", curr_data)
 
         ret_str = ret_str.replace(",", " ")
         print(ret_str, "\n")
-        twitter.update_status(ret_str)
+
+        file_dead = "./graphs/no_dead.png"
+        dead_graph = twitter.media_upload(file_dead)
+
+        twitter.update_status(ret_str, media_ids=[dead_graph.media_id])
 
 
 def hospitalized():
@@ -252,15 +261,12 @@ def daily_stats():
 def daily_graphs():
     graph_tested_lab()
     graph_confirmed()
-    graph_dead()
 
     file_tested_lab = "./graphs/no_tested_lab.png"
     file_confirmed = "./graphs/no_confirmed.png"
-    file_dead = "./graphs/no_dead.png"
 
     tested_lab = twitter.media_upload(file_tested_lab)
     confirmed = twitter.media_upload(file_confirmed)
-    dead = twitter.media_upload(file_dead)
 
     message = "📊 Statistikk - {}".format(get_date_yesterday())
     message += "\n#covid19norge"
@@ -271,7 +277,6 @@ def daily_graphs():
         media_ids=[
             tested_lab.media_id,
             confirmed.media_id,
-            dead.media_id,
         ],
     )
 
