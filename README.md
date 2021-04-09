@@ -33,12 +33,14 @@ twitter:
   - Admissions
   - Respiratory
   - Vaccine doses
+  - Smittestopp
 - **Graphs**
   - Tested
   - Confirmed cases
   - Dead
   - Hospitalized
   - Vaccine doses
+  - Smittestopp
 - **RSS**
   - News from FHI (Folkehelseinstituttet)
   - News from the goverment (Regjeringen)

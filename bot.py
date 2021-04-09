@@ -17,6 +17,7 @@ from modules.graphs import (
     graph_hospitalized,
     graph_tested_lab,
     graph_vaccine,
+    graph_smittestopp,
 )
 
 with open("./config/config.yml", "r") as ymlfile:
@@ -208,6 +209,60 @@ def vaccine_doses():
         vaccine_graph = twitter.media_upload(file_vaccine_doses)
 
         twitter.update_status(ret_str, media_ids=[vaccine_graph.media_id])
+
+
+def smittestopp():
+    source_url = jobs["smittestopp"]["source"]["url"]
+
+    curr_data = c19norge.timeseries("smittestopp")[-1]
+    curr_total_downloads = int(curr_data.get("total_downloads"))
+    curr_total_reported = int(curr_data.get("total_reported"))
+
+    last_data = file_open_json("smittestopp")
+    last_total_downloads = int(last_data.get("total_downloads"))
+    last_total_reported = int(last_data.get("total_reported"))
+
+    if (
+        curr_total_downloads != last_total_downloads
+        or curr_total_reported != last_total_reported
+    ):
+        graph_smittestopp()
+        new_downloads = int(curr_data.get("new_downloads"))
+        new_reported = int(curr_data.get("new_reported"))
+
+        if new_downloads == 1:
+            new_downloads_text = "ny nedlasting av appen Smittestopp"
+        else:
+            new_downloads_text = "nye nedlastinger av appen Smittestopp"
+
+        if new_reported == 1:
+            new_reported_text = "ny person meldt smittet gjennom appen Smittestopp"
+        else:
+            new_reported_text = "nye personer meldt smittet gjennom appen Smittestopp"
+
+        ret_str = "📱 Smittestopp"
+
+        if new_downloads != 0:
+            ret_str += f"\n{new_downloads:,} {new_downloads_text}"
+
+        if new_reported != 0:
+            ret_str += f"\n{new_reported:,} {new_reported_text}"
+
+        ret_str += f"\n\nTotalt antall nedlastinger: {curr_total_downloads:,}"
+        ret_str += (
+            f"\nTotalt {curr_total_reported:,} personer er meldt smittet gjennom appen"
+        )
+        ret_str += f"\n\nKilde: {source_url}"
+
+        file_write_json("smittestopp", curr_data)
+
+        ret_str = ret_str.replace(",", " ")
+        print(ret_str, "\n")
+
+        file_smittestopp = "./graphs/no_smittestopp.png"
+        smittestopp_graph = twitter.media_upload(file_smittestopp)
+
+        twitter.update_status(ret_str, media_ids=[smittestopp_graph.media_id])
 
 
 def daily_stats():

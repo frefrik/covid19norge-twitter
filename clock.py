@@ -37,6 +37,10 @@ sched.add_job(
     minute="*/" + str(jobs["hospitalized"]["interval"]),
 )
 
+sched.add_job(
+    bot.smittestopp, trigger="cron", minute="*/" + str(jobs["smittestopp"]["interval"])
+)
+
 # rss
 sched.add_job(
     bot.rss_fhi, trigger="cron", minute="*/" + str(jobs["rss_fhi"]["interval"])

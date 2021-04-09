@@ -49,3 +49,9 @@ twitter:
       source:
         name: FHI
         url: https://www.fhi.no/sv/vaksine/koronavaksinasjonsprogrammet/koronavaksinasjonsstatistikk/
+    smittestopp:
+      enabled: True
+      interval: 5
+      source:
+        name: FHI
+        url: https://www.fhi.no/om/smittestopp/nokkeltall-fra-smittestopp/
