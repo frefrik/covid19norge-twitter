@@ -50,6 +50,33 @@ def tested():
         twitter.update_status(ret_str)
 
 
+def tested_lab():
+    source_url = jobs["tested_lab"]["source"]["url"]
+
+    curr_data = c19norge.timeseries("tested_lab")[-1]
+    curr_total = curr_data.get("total")
+
+    last_data = file_open_json("tested_lab")
+    last_total = last_data.get("total")
+
+    if curr_total - last_total > 0:
+        graph_tested_lab()
+
+        ret_str = "🔬 Antall testet (Laboratoriedata)"
+        ret_str += "\nAntall personer testet og andelen positive blant disse i Norge siden epidemiens start."
+        ret_str += "\nEn ny test på en person defineres som en test utført minst 7 dager etter forrige test av samme person."
+        ret_str += f"\n\nKilde: {source_url}"
+
+        file_write_json("tested_lab", curr_data)
+
+        print(ret_str, "\n")
+
+        file_tested_lab = "./graphs/no_tested_lab.png"
+        tested_lab_graph = twitter.media_upload(file_tested_lab)
+
+        twitter.update_status(ret_str, media_ids=[tested_lab_graph.media_id])
+
+
 def confirmed():
     data = c19norge.metadata("confirmed")
     total = data.get("total")

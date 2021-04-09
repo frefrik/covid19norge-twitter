@@ -19,6 +19,12 @@ twitter:
       interval: 5
       text_pos_singular: ny registrert testet
       text_pos_plural: nye registrert testet
+    tested_lab:
+      source:
+        name: FHI
+        url: https://www.fhi.no/sv/smittsomme-sykdommer/corona/dags--og-ukerapporter/dags--og-ukerapporter-om-koronavirus/
+      enabled: True
+      interval: 5
     confirmed:
       source:
         name: MSIS

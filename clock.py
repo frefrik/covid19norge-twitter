@@ -20,6 +20,9 @@ if "update" in sys.argv[1:]:
 
 # general stats
 sched.add_job(bot.tested, trigger="cron", minute="*/" + str(jobs["tested"]["interval"]))
+sched.add_job(
+    bot.tested_lab, trigger="cron", minute="*/" + str(jobs["tested_lab"]["interval"])
+)
 
 sched.add_job(
     bot.confirmed, trigger="cron", minute="*/" + str(jobs["confirmed"]["interval"])
