@@ -72,7 +72,7 @@ def graph_tested_lab():
             direction="horizontal",
             orient="none",
             legendX=480,
-            legendY=650,
+            legendY=660,
         )
     )
 
@@ -150,7 +150,7 @@ def graph_confirmed():
             direction="horizontal",
             orient="none",
             legendX=480,
-            legendY=650,
+            legendY=660,
         )
     )
 
