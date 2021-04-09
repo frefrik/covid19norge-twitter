@@ -368,29 +368,6 @@ def daily_stats():
     twitter.update_status(ret_str)
 
 
-def daily_graphs():
-    graph_tested_lab()
-    graph_confirmed()
-
-    file_tested_lab = "./graphs/no_tested_lab.png"
-    file_confirmed = "./graphs/no_confirmed.png"
-
-    tested_lab = twitter.media_upload(file_tested_lab)
-    confirmed = twitter.media_upload(file_confirmed)
-
-    message = "📊 Statistikk - {}".format(get_date_yesterday())
-    message += "\n#covid19norge"
-
-    print(message, "\n")
-    twitter.update_status(
-        message,
-        media_ids=[
-            tested_lab.media_id,
-            confirmed.media_id,
-        ],
-    )
-
-
 def rss_fhi():
     feed = fhi()
 

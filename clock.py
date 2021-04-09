@@ -63,7 +63,5 @@ sched.add_job(
 # daily jobs
 sched.add_job(bot.daily_stats, trigger="cron", hour=0, minute=30)
 
-sched.add_job(bot.daily_graphs, trigger="cron", hour=0, minute=31)
-
 print("Starting scheduler!")
 sched.start()
