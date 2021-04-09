@@ -35,6 +35,12 @@ twitter:
       text_pos_plural: nye registrerte smittetilfeller
       text_neg_singular:
       text_neg_plural:
+    confirmed_by_testdate:
+      source:
+        name: FHI
+        url: https://www.fhi.no/sv/smittsomme-sykdommer/corona/dags--og-ukerapporter/dags--og-ukerapporter-om-koronavirus/
+      enabled: True
+      interval: 5
     dead:
       source:
         name: FHI

@@ -27,6 +27,11 @@ sched.add_job(
 sched.add_job(
     bot.confirmed, trigger="cron", minute="*/" + str(jobs["confirmed"]["interval"])
 )
+sched.add_job(
+    bot.confirmed_by_testdate,
+    trigger="cron",
+    minute="*/" + str(jobs["confirmed_by_testdate"]["interval"]),
+)
 
 sched.add_job(bot.dead, trigger="cron", minute="*/" + str(jobs["dead"]["interval"]))
 

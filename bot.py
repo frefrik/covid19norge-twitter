@@ -114,6 +114,34 @@ def confirmed():
         twitter.update_status(ret_str)
 
 
+def confirmed_by_testdate():
+    source_url = jobs["confirmed_by_testdate"]["source"]["url"]
+    data = c19norge.timeseries("confirmed")
+
+    curr_data = list(filter(lambda x: x["source"] == "fhi:git", data))[-1]
+    curr_total = curr_data.get("total")
+
+    last_data = file_open_json("confirmed_by_testdate")
+    last_total = last_data.get("total")
+
+    if curr_total - last_total > 0:
+        graph_confirmed()
+
+        ret_str = f"🦠 Antall meldte smittetilfeller"
+
+        ret_str += "\nAntall meldte COVID-19 tilfeller etter prøvetakingsdato."
+        ret_str += "\nDet er 1-2 dagers forsinkelse i tiden fra diagnose til registrering i MSIS."
+        ret_str += f"\n\nKilde: {source_url}"
+
+        file_write_json("confirmed_by_testdate", curr_data)
+
+        print(ret_str, "\n")
+        file_confirmed = "./graphs/no_confirmed.png"
+        confirmed_graph = twitter.media_upload(file_confirmed)
+
+        twitter.update_status(ret_str, media_ids=[confirmed_graph.media_id])
+
+
 def dead():
     source_url = jobs["dead"]["source"]["url"]
 
