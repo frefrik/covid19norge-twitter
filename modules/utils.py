@@ -1,6 +1,6 @@
 import json
 import yaml
-from datetime import datetime, date, timedelta
+from datetime import date, timedelta
 import modules.c19norge as c19norge
 
 with open("./config/config.yml", "r") as ymlfile:
@@ -60,5 +60,5 @@ def file_open_json(category):
 
 
 def file_write_json(category, data):
-    with open(f"data/{category}.json", "w") as json_file:
-        json.dump(data, json_file)
+    with open(f"data/{category}.json", "w", encoding="utf8") as json_file:
+        json.dump(data, json_file, indent=2, ensure_ascii=False)
