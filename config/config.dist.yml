@@ -5,10 +5,7 @@ twitter:
     access_token: <ACCESS_TOKEN>
     access_token_secret: <ACCESS_SECRET>
   jobs:
-    rss_fhi:
-      enabled: True
-      interval: 5
-    rss_regjeringen:
+    rss_feed:
       enabled: True
       interval: 5
     tested:

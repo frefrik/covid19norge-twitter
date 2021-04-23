@@ -1,89 +1,39 @@
 import feedparser
-from sqlitedict import SqliteDict
-
-db = SqliteDict("./data/rss_database.sqlite", "rss", autocommit=True)
-
-key_words = {
-    "fhi": [
-        "korona",
-        "intensiv",
-        "covid",
-        "smitte",
-        "app",
-        "rød",
-        "grøn",
-        "hurtigrut",
-        "utbrudd",
-        "karantene",
-        "reiser",
-        "AstraZeneca",
-        "Moderna",
-        "Comirnaty",
-        "BioNTech",
-        "Pfizer",
-    ],
-    "regjeringen": ["pressekonferanse"],
-}
+from modules.utils import file_open_json, file_write_json
 
 
-def select_all():
-    for i in db.items():
-        print(i)
-
-
-def contains_wanted(feed, in_str):
-    for key_word in key_words[feed]:
+def contains_wanted(in_str, key_words):
+    for key_word in key_words:
         if key_word.lower() in in_str:
             return True
-
     return False
 
 
-def fhi():
-    feed_url = "https://fhi.no/rss/nyheter/"
-    feed = feedparser.parse(feed_url)
+def fetch_feed():
+    rssfile = file_open_json("rss")
 
-    for post in feed.entries:
-        title = post.title
-        url = post.link
+    for i in rssfile:
+        data = rssfile[i]
+        header_name = data["name"]
+        feed_url = data["feed_url"]
+        hashtags = data["hashtags"]
+        keywords = data["keywords"]
+        seen_urls = data["seen_urls"]
 
-        if post.link in db:
-            break
+        feed = feedparser.parse(feed_url)
 
-        if contains_wanted("fhi", title.lower()):
-            ret_str = "📰 Nyhetsvarsel fra FHI:"
-            ret_str += "\n{}".format(title)
-            ret_str += "\n{}".format(url)
-            ret_str += "\n\n#covid19norge #koronaNorge #fhi"
+        for post in feed.entries:
+            title = post.title
+            url = post.link
 
-            db[post.link] = True
+            if url not in seen_urls:
+                if contains_wanted(title.lower(), keywords):
+                    ret_str = f"📰 Nyhetsvarsel fra {header_name}:"
+                    ret_str += f"\n{url}"
+                    ret_str += f"\n\n{' '.join([str(elem) for elem in hashtags])}"
+                    print(ret_str)
 
-        else:
-            return None
+                    seen_urls.append(url)
+                    file_write_json("rss", rssfile)
 
-        return ret_str
-
-
-def regjeringen():
-    feed_url = "https://www.regjeringen.no/no/rss/Rss/2581966/?topic=2692388&documentType=aktuelt/nyheter"
-    feed = feedparser.parse(feed_url)
-
-    for post in feed.entries:
-        title = post.title
-        url = post.link.split("?utm_source")[0]
-
-        if url in db:
-            break
-
-        if contains_wanted("regjeringen", title.lower()):
-            ret_str = "📰 Nyhetsvarsel fra Regjeringen:"
-            ret_str += "\n{}".format(title)
-            ret_str += "\n{}".format(url)
-            ret_str += "\n\n#covid19norge #koronaNorge #regjeringen"
-
-            db[url] = True
-
-        else:
-            return None
-
-        return ret_str
+                    return ret_str

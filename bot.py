@@ -2,7 +2,7 @@ import yaml
 from datetime import datetime
 import modules.c19norge as c19norge
 from modules.twitter import create_api
-from modules.rss import fhi, regjeringen
+from modules.rss import fetch_feed
 from modules.utils import (
     file_open,
     file_write,
@@ -368,15 +368,8 @@ def daily_stats():
     twitter.update_status(ret_str)
 
 
-def rss_fhi():
-    feed = fhi()
-
-    if feed:
-        twitter.update_status(feed)
-
-
-def rss_regjeringen():
-    feed = regjeringen()
+def rss_feed():
+    feed = fetch_feed()
 
     if feed:
         twitter.update_status(feed)

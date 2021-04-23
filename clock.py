@@ -51,13 +51,7 @@ sched.add_job(
 
 # rss
 sched.add_job(
-    bot.rss_fhi, trigger="cron", minute="*/" + str(jobs["rss_fhi"]["interval"])
-)
-
-sched.add_job(
-    bot.rss_regjeringen,
-    trigger="cron",
-    minute="*/" + str(jobs["rss_regjeringen"]["interval"]),
+    bot.rss_feed, trigger="cron", minute="*/" + str(jobs["rss_feed"]["interval"])
 )
 
 # daily jobs

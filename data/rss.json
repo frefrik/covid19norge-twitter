@@ -1,0 +1,45 @@
+{
+  "fhi": {
+    "name": "FHI",
+    "feed_url": "https://fhi.no/rss/nyheter/",
+    "hashtags": [
+      "#covid19norge",
+      "#korona",
+      "#hyhetsvarsel",
+      "#fhi",
+      "#folkehelseinstituttet"
+    ],
+    "keywords": [
+      "korona",
+      "intensiv",
+      "covid",
+      "smitte",
+      "app",
+      "rød",
+      "hurtigrut",
+      "utbrudd",
+      "karantene",
+      "reiser",
+      "AstraZeneca",
+      "Moderna",
+      "Comirnaty",
+      "BioNTech",
+      "Pfizer"
+    ],
+    "seen_urls": []
+  },
+  "regjeringen": {
+    "name": "Regjeringen",
+    "feed_url": "https://www.regjeringen.no/no/rss/Rss/2581966/?topic=2692388&documentType=aktuelt/nyheter",
+    "hashtags": [
+      "#covid19norge",
+      "#korona",
+      "#hyhetsvarsel",
+      "#regjeringen"
+    ],
+    "keywords": [
+      "pressekonferanse"
+    ],
+    "seen_urls": []
+  }
+}
