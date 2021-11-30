@@ -234,12 +234,15 @@ def vaccine_doses():
         graph_vaccine()
         curr_total_dose_1 = curr_data.get("total_dose_1")
         curr_total_dose_2 = curr_data.get("total_dose_2")
+        curr_total_dose_3 = curr_data.get("total_dose_3")
 
         last_total_dose_1 = last_data.get("total_dose_1")
         last_total_dose_2 = last_data.get("total_dose_2")
+        last_total_dose_3 = last_data.get("total_dose_3")
 
         diff_total_dose_1 = curr_total_dose_1 - last_total_dose_1
         diff_total_dose_2 = curr_total_dose_2 - last_total_dose_2
+        diff_total_dose_3 = curr_total_dose_3 - last_total_dose_3
 
         ret_str = "💉 Antall vaksinerte"
 
@@ -249,10 +252,12 @@ def vaccine_doses():
         if diff_total_dose_2 != 0:
             ret_str += f"\n{diff_total_dose_2:,} nye personer fullvaksinert"
 
-        ret_str += (
-            f"\n\nTotalt {curr_total_dose_1:,} personer har fått minst én vaksinedose"
-        )
-        ret_str += f"\nTotalt {curr_total_dose_2:,} personer er fullvaksinert"
+        if diff_total_dose_3 != 0:
+            ret_str += f"\n{diff_total_dose_3:,} nye personer vaksinert med 3. dose"
+
+        ret_str += f"\n\nTotalt {curr_total_dose_1:,} har fått minst én dose"
+        ret_str += f"\nTotalt {curr_total_dose_2:,} har fått to doser"
+        ret_str += f"\nTotalt {curr_total_dose_3:,} har fått tre doser"
         ret_str += f"\n\nKilde: {source_url}"
 
         file_write_json("vaccine_doses", curr_data)
