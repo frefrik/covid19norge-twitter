@@ -219,6 +219,7 @@ def hospitalized():
 
 
 def vaccine_doses():
+    population = 5391369
     source_url = jobs["vaccine"]["source"]["url"]
     data = c19norge.timeseries("vaccine_doses")
 
@@ -244,6 +245,10 @@ def vaccine_doses():
         diff_total_dose_2 = curr_total_dose_2 - last_total_dose_2
         diff_total_dose_3 = curr_total_dose_3 - last_total_dose_3
 
+        curr_total_dose_1_pct = curr_total_dose_1 / population
+        curr_total_dose_2_pct = curr_total_dose_2 / population
+        curr_total_dose_3_pct = curr_total_dose_3 / population
+
         ret_str = "💉 Antall vaksinerte"
 
         if diff_total_dose_1 != 0:
@@ -255,9 +260,16 @@ def vaccine_doses():
         if diff_total_dose_3 != 0:
             ret_str += f"\n{diff_total_dose_3:,} nye personer vaksinert med 3. dose"
 
-        ret_str += f"\n\nTotalt {curr_total_dose_1:,} har fått minst én dose"
-        ret_str += f"\nTotalt {curr_total_dose_2:,} har fått to doser"
-        ret_str += f"\nTotalt {curr_total_dose_3:,} har fått tre doser"
+        ret_str += "\n\nTotal andel"
+        ret_str += (
+            f"\nDose 1: {curr_total_dose_1_pct:,.02%} ({curr_total_dose_1:,}</b> pers)"
+        )
+        ret_str += (
+            f"\nDose 2: {curr_total_dose_2_pct:,.02%} ({curr_total_dose_2:,}</b> pers)"
+        )
+        ret_str += (
+            f"\nDose 3: {curr_total_dose_3_pct:,.02%} ({curr_total_dose_3:,} pers)"
+        )
         ret_str += f"\n\nKilde: {source_url}"
 
         file_write_json("vaccine_doses", curr_data)
@@ -365,8 +377,6 @@ def daily_stats():
     ret_str += "\n\n🏥 Pasienter på sykehus"
     ret_str += f"\nInnlagt: {admissions_total:,}"
     ret_str += f"\nTilkoblet respirator: {respiratory_total:,}"
-
-    ret_str += "\n#covid19norge"
 
     ret_str = ret_str.replace(",", " ")
     print(ret_str, "\n")
