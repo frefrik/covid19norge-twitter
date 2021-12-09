@@ -158,7 +158,7 @@ def dead():
         messagetext = get_messagetext("dead", diff_dead)
         curr_new_today = curr_data.get("new")
 
-        ret_str = "❗ COVID-19 assosierte dødsfall"
+        ret_str = "❗ COVID-19 assosierte dødsfall\n"
         ret_str += f"\n{diff_dead} {messagetext}"
 
         ret_str += f"\nTotalt: {curr_total:,} (Nye i dag: {curr_new_today:,})"
@@ -192,7 +192,7 @@ def hospitalized():
         diff_respiratory = curr_respiratory - last_respiratory
         respiratory_pct = curr_respiratory / curr_admissions
 
-        ret_str = "🏥 Innlagte pasienter på sykehus"
+        ret_str = "🏥 Innlagte pasienter på sykehus\n"
 
         if diff_admissions != 0:
             ret_str += f"\nEndring i antall innlagte: {diff_admissions:+,}"
@@ -249,7 +249,7 @@ def vaccine_doses():
         curr_total_dose_2_pct = curr_total_dose_2 / population
         curr_total_dose_3_pct = curr_total_dose_3 / population
 
-        ret_str = "💉 Antall vaksinerte"
+        ret_str = "💉 Antall vaksinerte\n"
 
         if diff_total_dose_1 != 0:
             ret_str += f"\n{diff_total_dose_1:,} nye personer vaksinert med 1. dose"
@@ -262,10 +262,10 @@ def vaccine_doses():
 
         ret_str += "\n\nTotal andel"
         ret_str += (
-            f"\nDose 1: {curr_total_dose_1_pct:,.02%} ({curr_total_dose_1:,}</b> pers)"
+            f"\nDose 1: {curr_total_dose_1_pct:,.02%} ({curr_total_dose_1:,} pers)"
         )
         ret_str += (
-            f"\nDose 2: {curr_total_dose_2_pct:,.02%} ({curr_total_dose_2:,}</b> pers)"
+            f"\nDose 2: {curr_total_dose_2_pct:,.02%} ({curr_total_dose_2:,} pers)"
         )
         ret_str += (
             f"\nDose 3: {curr_total_dose_3_pct:,.02%} ({curr_total_dose_3:,} pers)"
@@ -333,6 +333,54 @@ def smittestopp():
         smittestopp_graph = twitter.media_upload(file_smittestopp)
 
         twitter.update_status(ret_str, media_ids=[smittestopp_graph.media_id])
+
+
+def omicron():
+    source_url = jobs["omicron"]["source"]["url"]
+
+    curr_data = c19norge.timeseries("omicron")[-1]
+    curr_total_confirmed = int(curr_data.get("total_confirmed"))
+    curr_total_probable = int(curr_data.get("total_probable"))
+
+    last_data = file_open_json("omicron")
+    last_total_confirmed = int(last_data.get("total_confirmed"))
+    last_total_probable = int(last_data.get("total_probable"))
+
+    diff_total_confirmed = curr_total_confirmed - last_total_confirmed
+    diff_total_probable = curr_total_probable - last_total_probable
+
+    if diff_total_confirmed > 0 or diff_total_probable > 0:
+        if diff_total_confirmed == 1:
+            new_confirmed_text = "nytt bekreftet smittetilfelle"
+        else:
+            new_confirmed_text = "nye bekreftede smittetilfeller"
+
+        if diff_total_probable == 1:
+            new_probable_text = "nytt sannsynlig smittetilfelle"
+        else:
+            new_probable_text = "nye sannsynlige smittetilfeller"
+
+        ret_str = "🧬 Tilfeller av Omikron-viruset\n"
+
+        if diff_total_probable > 0:
+            ret_str += f"\n{diff_total_probable:,} {new_probable_text}"
+
+        if diff_total_confirmed > 0:
+            ret_str += f"\n{diff_total_confirmed:,} {new_confirmed_text}"
+
+        ret_str += f"\n\nTotalt sannsynlige tilfeller: {curr_total_probable:,}"
+        ret_str += f"\nTotalt bekreftede tilfeller: {curr_total_confirmed:,}"
+        ret_str += f"\n\nKilde: {source_url}"
+
+        file_write_json("omicron", curr_data)
+
+        ret_str = ret_str.replace(",", " ")
+        print(ret_str, "\n")
+
+        twitter.update_status(ret_str)
+
+    else:
+        return None
 
 
 def daily_stats():

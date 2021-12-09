@@ -64,3 +64,9 @@ twitter:
       source:
         name: FHI
         url: https://www.fhi.no/om/smittestopp/nokkeltall-fra-smittestopp/
+    omicron:
+      enabled: True
+      interval: 5
+      source:
+        name: FHI
+        url: https://www.fhi.no/sv/smittsomme-sykdommer/corona/meldte-tilfeller-av-ny-virusvariant/

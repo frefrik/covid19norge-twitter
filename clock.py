@@ -49,6 +49,10 @@ sched.add_job(
     bot.smittestopp, trigger="cron", minute="*/" + str(jobs["smittestopp"]["interval"])
 )
 
+sched.add_job(
+    bot.omicron, trigger="cron", minute="*/" + str(jobs["omicron"]["interval"])
+)
+
 # rss
 sched.add_job(
     bot.rss_feed, trigger="cron", minute="*/" + str(jobs["rss_feed"]["interval"])
