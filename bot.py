@@ -62,9 +62,8 @@ def tested_lab():
     if curr_total - last_total > 0:
         graph_tested_lab()
 
-        ret_str = "🔬 Antall testet (Laboratoriedata)"
-        ret_str += "\nAntall personer testet og andelen positive blant disse i Norge siden epidemiens start."
-        ret_str += "\nEn ny test på en person defineres som en test utført minst 7 dager etter forrige test av samme person."
+        ret_str = "🔺 Andel positive tester"
+        ret_str += "\nProsentandelen positive tester i Norge siden epidemiens start."
         ret_str += f"\n\nKilde: {source_url}"
 
         file_write_json("tested_lab", curr_data)
