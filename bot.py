@@ -181,29 +181,39 @@ def hospitalized():
     curr_data = c19norge.timeseries("hospitalized")[-1]
     curr_respiratory = int(curr_data.get("respiratory"))
     curr_admissions = int(curr_data.get("admissions"))
+    curr_icu = int(curr_data.get("icu"))
 
     last_data = file_open_json("hospitalized")
     last_respiratory = int(last_data.get("respiratory"))
     last_admissions = int(last_data.get("admissions"))
+    last_icu = int(last_data.get("icu"))
 
-    if curr_admissions != last_admissions or curr_respiratory != last_respiratory:
+    if (
+        curr_admissions != last_admissions
+        or curr_respiratory != last_respiratory
+        or curr_icu != last_icu
+    ):
         graph_hospitalized()
         diff_admissions = curr_admissions - last_admissions
         diff_respiratory = curr_respiratory - last_respiratory
+        diff_icu = curr_icu - last_icu
         respiratory_pct = curr_respiratory / curr_admissions
+        icu_pct = curr_icu / curr_admissions
 
         ret_str = "🏥 Innlagte pasienter på sykehus\n"
 
         if diff_admissions != 0:
             ret_str += f"\nEndring i antall innlagte: {diff_admissions:+,}"
 
+        if diff_icu != 0:
+            ret_str += f"\nEndring i antall på intensivavdeling: {diff_icu:+,}"
+
         if diff_respiratory != 0:
             ret_str += f"\nEndring i antall på respirator: {diff_respiratory:+,}"
 
-        ret_str += f"\n\n{curr_admissions:,} personer er innlagt på sykehus"
-        ret_str += (
-            f"\n{curr_respiratory:,} personer er på respirator ({respiratory_pct:.01%})"
-        )
+        ret_str += f"\n\n{curr_admissions:,} er innlagt på sykehus"
+        ret_str += f"\n{curr_icu:,} er innlagt på intensivavdeling ({icu_pct:.01%})"
+        ret_str += f"\n{curr_respiratory:,} er på respirator ({respiratory_pct:.01%})"
 
         ret_str += f"\n\nKilde: {source_url}"
 
@@ -340,36 +350,24 @@ def omicron():
 
     curr_data = c19norge.timeseries("omicron")[-1]
     curr_total_confirmed = int(curr_data.get("total_confirmed"))
-    curr_total_probable = int(curr_data.get("total_probable"))
 
     last_data = file_open_json("omicron")
     last_total_confirmed = int(last_data.get("total_confirmed"))
-    last_total_probable = int(last_data.get("total_probable"))
 
     diff_total_confirmed = curr_total_confirmed - last_total_confirmed
-    diff_total_probable = curr_total_probable - last_total_probable
 
-    if diff_total_confirmed > 0 or diff_total_probable > 0:
+    if diff_total_confirmed > 0:
         if diff_total_confirmed == 1:
             new_confirmed_text = "nytt bekreftet smittetilfelle"
         else:
             new_confirmed_text = "nye bekreftede smittetilfeller"
 
-        if diff_total_probable == 1:
-            new_probable_text = "nytt sannsynlig smittetilfelle"
-        else:
-            new_probable_text = "nye sannsynlige smittetilfeller"
-
-        ret_str = "🧬 Tilfeller av Omikron-viruset\n"
-
-        if diff_total_probable > 0:
-            ret_str += f"\n{diff_total_probable:,} {new_probable_text}"
+        ret_str = "🧬 Tilfeller av Omikron-viruset"
 
         if diff_total_confirmed > 0:
             ret_str += f"\n{diff_total_confirmed:,} {new_confirmed_text}"
 
-        ret_str += f"\n\nTotalt sannsynlige tilfeller: {curr_total_probable:,}"
-        ret_str += f"\nTotalt bekreftede tilfeller: {curr_total_confirmed:,}"
+        ret_str += f"\n\nTotalt bekreftede tilfeller: {curr_total_confirmed:,}"
         ret_str += f"\n\nKilde: {source_url}"
 
         file_write_json("omicron", curr_data)
