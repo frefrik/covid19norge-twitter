@@ -417,9 +417,12 @@ def daily_stats():
     ret_str += f"\n\n🔬 Testede siste døgn: {tested_newYesterday:,}"
     ret_str += f"\nTotalt: {tested_total:,}"
 
-    ret_str += "\n\n🏥 Pasienter på sykehus"
-    ret_str += f"\nInnlagt: {admissions_total:,}"
-    ret_str += f"\nTilkoblet respirator: {respiratory_total:,}"
+    # https://www.helsedirektoratet.no/statistikk/antall-innlagte-pasienter-pa-sykehus-med-pavist-covid-19
+    # Fra 23. mars 2022 ble rapporteringen avsluttet og visningen blir derfor ikke lenger oppdatert etter denne datoen.
+    #
+    # ret_str += "\n\n🏥 Pasienter på sykehus"
+    # ret_str += f"\nInnlagt: {admissions_total:,}"
+    # ret_str += f"\nTilkoblet respirator: {respiratory_total:,}"
 
     ret_str = ret_str.replace(",", " ")
     print(ret_str, "\n")
