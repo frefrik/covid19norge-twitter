@@ -6,4 +6,4 @@ pandas==1.4.1
 PyYAML==6.0
 requests==2.27.1
 sqlitedict==1.7.0
-tweepy==4.5.0
+tweepy==4.12.0
